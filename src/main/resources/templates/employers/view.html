@@ -10,6 +10,17 @@
 <div class="job-listing">
     <p th:text="${'Name: ' + employer.name}"></p>
     <p th:text="${'Location: ' + employer.location}"></p>
+    <p> Jobs:
+    <ul>
+        <th:block th:each="job : ${jobs}">
+        <li>
+            <a th:href="@{'/view/' + ${job.getId()}}" th:text="${job.getName()}"></a>
+        </li>
+        </th:block>
+    </ul>
+
+    </p>
+
 </div>
 
 
