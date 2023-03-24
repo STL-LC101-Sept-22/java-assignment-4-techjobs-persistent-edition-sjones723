@@ -1,6 +1,7 @@
 package org.launchcode.techjobs.persistent.controllers;
 
 
+import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +14,23 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("skill")
+@RequestMapping("skills")
 public class SkillController {
 
     @Autowired
     private SkillRepository skillRepository;
 
-    /* Add an index method that responds at /employers with a list of all employers in the database. This method should use the template employers/index.
-     */
+
     @GetMapping("")
     public String index(Model model){
-        model.addAttribute("employers", skillRepository.findAll());
-        return"employers/index";
+        model.addAttribute("skills", skillRepository.findAll());
+        return"skills/index";
     }
 
     @GetMapping("add")
     public String displayAddSkillForm(Model model) {
         model.addAttribute(new Skill());
-        return "employers/add";
+        return "skills/add";
     }
 
     @PostMapping("add")
@@ -38,23 +38,24 @@ public class SkillController {
                                     Errors errors, Model model) {
 
         if (errors.hasErrors()) {
-            return "employers/add";
+            model.addAttribute("errors", errors);
+            return "skills/add";
         }
         skillRepository.save(newSkill);
         return "redirect:";
     }
 
-    @GetMapping("view/{employerId}")
-    public String displayViewSkill(Model model, @PathVariable int employerId) {
+    @GetMapping("view")
+    public String displayViewSkill(Model model, @PathVariable int skillId) {
 
-//        Optional optEmployer = null;
-        Optional<Skill> optEmployer = skillRepository.findById(employerId);
-        if (optEmployer.isPresent()) {
-            Skill skill = (Skill) optEmployer.get();
-            model.addAttribute("employer", skill);
-            return "employers/view";
+        Optional<Skill> optSkill = skillRepository.findById(skillId);
+        if (optSkill.isPresent()) {
+            Skill skill = (Skill) optSkill.get();
+            model.addAttribute("skill", skill);
+            return "skills/view";
         } else {
             return "redirect:../";
         }
+
     }
 }

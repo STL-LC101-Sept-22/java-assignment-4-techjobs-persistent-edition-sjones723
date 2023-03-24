@@ -17,7 +17,7 @@ public abstract class AbstractEntity {
 there are reasonable limitations on the size of the name string. Keep in mind that the name field will be shared across Job, Employer, and Skill classes. Some employer names might be longer than 50 characters.
 
 */
-    @NotBlank(message = "Name is required")
+    @NotBlank(message = "Required field")
     @Size(min = 3, max = 120, message = "Must be between 3 and 120 characters")
     private String name;
 
